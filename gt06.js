@@ -35,12 +35,12 @@ Gt06.prototype.parse = function (data) {
                 parsed.expectsResponse = true;
                 parsed.responseMsg = createResponse(msg);
                 break;
-            // case 0x15:
-            //     //parseLocation(msg);
-            //     break;
             // case 0x16:
             //     result = parseAlarm(msg);
             //     break;
+            case 0x22: // location message
+                Object.assign(parsed, parseLocation(msg), { imei:this.imei });
+                 break;
             // case 0x1A:
             //     //parseLocation(msg);
             //     break;
@@ -84,6 +84,9 @@ function selectEvent(data) {
             eventStr = 'login';
             break;
         case 0x12:
+            eventStr = 'location';
+            break;
+        case 0x22:
             eventStr = 'location';
             break;
         case 0x13:
@@ -232,6 +235,7 @@ function parseLocation(data) {
         serialNr: datasheet.serialNr,
         errorCheck: datasheet.errorCheck
     };
+    console.log('>>>>>', parsed);
     return parsed;
 }
 
